@@ -42,7 +42,11 @@ export class PinTreeProvider
     private readonly workspaceRoot: string,
   ) {}
 
-  refresh(): void {
+  refresh(activeRelativePath?: string): void {
+    vscode.commands.executeCommand('setContext', 'pin-panel.hasGroups', this.storage.getGroups().length > 0);
+    if (activeRelativePath !== undefined) {
+      vscode.commands.executeCommand('setContext', 'pin-panel.activeFileIsPinned', this.storage.isAlreadyPinned(activeRelativePath));
+    }
     this._onDidChangeTreeData.fire();
   }
 

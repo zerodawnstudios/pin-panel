@@ -10,12 +10,20 @@ interface GroupQuickPickItem extends vscode.QuickPickItem {
   groupId: string | null;
 }
 
+function activeRelativePath(workspaceRoot: string): string {
+  const editor = vscode.window.activeTextEditor;
+  if (editor?.document.uri.scheme !== 'file') return '';
+  return path.relative(workspaceRoot, editor.document.uri.fsPath).replace(/\\/g, '/');
+}
+
 export function registerCommands(
   context: vscode.ExtensionContext,
   storage: PinStorage,
   provider: PinTreeProvider,
   workspaceRoot: string,
 ): void {
+  const refresh = () => provider.refresh(activeRelativePath(workspaceRoot));
+
   context.subscriptions.push(
 
     // ── Open pin ──────────────────────────────────────────────────────────────
@@ -57,7 +65,7 @@ export function registerCommands(
       });
       if (!name) return;
       storage.addGroup({ id: randomUUID(), name: name.trim() });
-      provider.refresh();
+      refresh();
     }),
 
     // ── Jump to pinned file (Quick Pick) ──────────────────────────────────────
@@ -100,7 +108,7 @@ export function registerCommands(
       });
       if (!alias) return;
       storage.updatePin(item.pin.id, { alias: alias.trim() });
-      provider.refresh();
+      refresh();
     }),
 
     // ── Move to group ─────────────────────────────────────────────────────────
@@ -116,7 +124,7 @@ export function registerCommands(
       });
       if (picked === undefined) return;
       storage.updatePin(item.pin.id, { groupId: picked.groupId });
-      provider.refresh();
+      refresh();
     }),
 
     // ── Copy path ─────────────────────────────────────────────────────────────
@@ -136,7 +144,18 @@ export function registerCommands(
       );
       if (confirm !== 'Unpin') return;
       storage.removePin(item.pin.id);
-      provider.refresh();
+      refresh();
+    }),
+
+    // ── Unpin from Explorer ───────────────────────────────────────────────────
+    vscode.commands.registerCommand('pin-panel.unpinFileFromExplorer', (uri: vscode.Uri) => {
+      if (!uri || uri.scheme !== 'file') return;
+      const relativePath = path.relative(workspaceRoot, uri.fsPath).replace(/\\/g, '/');
+      const pin = storage.getPins().find(p => p.relativePath === relativePath);
+      if (!pin) return;
+      storage.removePin(pin.id);
+      refresh();
+      vscode.window.setStatusBarMessage(`Unpinned: ${pin.alias}`, 3000);
     }),
 
     // ── Rename group ──────────────────────────────────────────────────────────
@@ -149,7 +168,7 @@ export function registerCommands(
       });
       if (!name) return;
       storage.updateGroup(item.group.id, { name: name.trim() });
-      provider.refresh();
+      refresh();
     }),
 
     // ── Delete group ──────────────────────────────────────────────────────────
@@ -166,7 +185,7 @@ export function registerCommands(
       );
       if (confirm !== 'Delete') return;
       storage.removeGroup(item.group.id);
-      provider.refresh();
+      refresh();
     }),
 
   );
@@ -182,10 +201,7 @@ async function pinFileUri(
 
   const relativePath = path.relative(workspaceRoot, uri.fsPath).replace(/\\/g, '/');
 
-  if (storage.isAlreadyPinned(relativePath)) {
-    vscode.window.showWarningMessage(`Already pinned: ${relativePath}`);
-    return;
-  }
+  if (storage.isAlreadyPinned(relativePath)) return;
 
   const defaultAlias = path.basename(uri.fsPath, path.extname(uri.fsPath));
 
@@ -215,6 +231,6 @@ async function pinFileUri(
   }
 
   storage.addPin({ id: randomUUID(), alias: alias.trim(), relativePath, groupId });
-  provider.refresh();
+  provider.refresh(activeRelativePath(workspaceRoot));
   vscode.window.setStatusBarMessage(`Pinned: ${alias.trim()}`, 3000);
 }

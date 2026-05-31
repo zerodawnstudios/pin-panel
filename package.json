@@ -40,7 +40,12 @@
       },
       {
         "command": "pin-panel.pinFile",
-        "title": "Pin File…",
+        "title": "Pin to Pin Panel",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.unpinFileFromExplorer",
+        "title": "Unpin from Pin Panel",
         "category": "Pin Panel"
       },
       {
@@ -106,7 +111,7 @@
         },
         {
           "command": "pin-panel.moveToGroup",
-          "when": "view == pin-panel.view && viewItem == pin",
+          "when": "view == pin-panel.view && viewItem == pin && pin-panel.hasGroups",
           "group": "1_modify@2"
         },
         {
@@ -134,7 +139,24 @@
         {
           "command": "pin-panel.pinFile",
           "group": "navigation@99",
-          "when": "!explorerResourceIsFolder"
+          "when": "!explorerResourceIsFolder && !pin-panel.activeFileIsPinned"
+        },
+        {
+          "command": "pin-panel.unpinFileFromExplorer",
+          "group": "navigation@99",
+          "when": "!explorerResourceIsFolder && pin-panel.activeFileIsPinned"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "pin-panel.pinFile",
+          "group": "navigation@99",
+          "when": "resourceScheme == 'file' && !pin-panel.activeFileIsPinned"
+        },
+        {
+          "command": "pin-panel.unpinFileFromExplorer",
+          "group": "navigation@99",
+          "when": "resourceScheme == 'file' && pin-panel.activeFileIsPinned"
         }
       ]
     },
