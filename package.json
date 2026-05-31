@@ -1,0 +1,161 @@
+{
+  "name": "pin-panel",
+  "displayName": "Pin Panel",
+  "description": "Pin files with custom aliases in a dedicated sidebar panel — navigate large codebases by name, not filename.",
+  "version": "0.1.0",
+  "publisher": "pin-panel",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onView:pin-panel.view"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pinPanelContainer",
+          "title": "Pin Panel",
+          "icon": "resources/pin.svg"
+        }
+      ]
+    },
+    "views": {
+      "pinPanelContainer": [
+        {
+          "id": "pin-panel.view",
+          "name": "Pin Panel",
+          "icon": "resources/pin.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "pin-panel.pinCurrentFile",
+        "title": "Pin Current File",
+        "icon": "$(pin)",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.pinFile",
+        "title": "Pin File…",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.newGroup",
+        "title": "New Group",
+        "icon": "$(add)",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.openQuickPick",
+        "title": "Jump to Pinned File",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.renameAlias",
+        "title": "Rename Alias",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.moveToGroup",
+        "title": "Move to Group",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.copyPath",
+        "title": "Copy Path",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.unpin",
+        "title": "Unpin File",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.renameGroup",
+        "title": "Rename Group",
+        "category": "Pin Panel"
+      },
+      {
+        "command": "pin-panel.deleteGroup",
+        "title": "Delete Group",
+        "category": "Pin Panel"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "pin-panel.newGroup",
+          "when": "view == pin-panel.view",
+          "group": "navigation@1"
+        },
+        {
+          "command": "pin-panel.pinCurrentFile",
+          "when": "view == pin-panel.view",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "pin-panel.renameAlias",
+          "when": "view == pin-panel.view && viewItem == pin",
+          "group": "1_modify@1"
+        },
+        {
+          "command": "pin-panel.moveToGroup",
+          "when": "view == pin-panel.view && viewItem == pin",
+          "group": "1_modify@2"
+        },
+        {
+          "command": "pin-panel.copyPath",
+          "when": "view == pin-panel.view && viewItem == pin",
+          "group": "2_copy@1"
+        },
+        {
+          "command": "pin-panel.unpin",
+          "when": "view == pin-panel.view && viewItem == pin",
+          "group": "9_destructive@1"
+        },
+        {
+          "command": "pin-panel.renameGroup",
+          "when": "view == pin-panel.view && viewItem == group",
+          "group": "1_modify@1"
+        },
+        {
+          "command": "pin-panel.deleteGroup",
+          "when": "view == pin-panel.view && viewItem == group",
+          "group": "9_destructive@1"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "pin-panel.pinFile",
+          "group": "navigation@99",
+          "when": "!explorerResourceIsFolder"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "pin-panel.openQuickPick",
+        "key": "ctrl+shift+;",
+        "mac": "cmd+shift+;"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "yarn run compile",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.74.0",
+    "@vscode/vsce": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}
