@@ -5,13 +5,11 @@
   "version": "0.1.0",
   "publisher": "pin-panel",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.75.0"
   },
   "icon": "resources/icon.png",
+  "license": "MIT",
   "categories": ["Other"],
-  "activationEvents": [
-    "onView:pin-panel.view"
-  ],
   "main": "./out/extension",
   "contributes": {
     "viewsContainers": {
