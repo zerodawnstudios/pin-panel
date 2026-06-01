@@ -3,7 +3,7 @@
   "displayName": "Pin Panel",
   "description": "Pin files with custom aliases in a dedicated sidebar panel — navigate large codebases by name, not filename.",
   "version": "0.1.0",
-  "publisher": "pin-panel",
+  "publisher": "zero-dawn-studios",
   "engines": {
     "vscode": "^1.75.0"
   },
