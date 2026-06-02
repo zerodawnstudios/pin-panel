@@ -23,6 +23,8 @@ VS Code's built-in tab pinning keeps them open but doesn't help you navigate. Th
 - Each pin shows your alias prominently and the real path below it
 - Missing files show a warning icon instead of crashing
 
+![Sidebar panel](media/sidebar.png)
+
 ### Drag and drop
 - Reorder pins within ungrouped or within a group
 - Drag a pin into a group, or back out to ungrouped
@@ -32,6 +34,11 @@ VS Code's built-in tab pinning keeps them open but doesn't help you navigate. Th
 - Fuzzy-search all pinned files **by alias**, not filename
 - Searching `auth` finds "Auth Layout" even though the file is `index.tsx`
 - Shows a `pin · GroupName` badge next to each result
+
+![Quick lookup](media/quick-lookup.png)
+
+### Open sidebar — `Cmd+Shift+]` / `Ctrl+Shift+]`
+- Instantly focuses the Pin Panel in the activity bar
 
 ### Context menus
 **Right-click a pin in the sidebar:**
@@ -44,6 +51,14 @@ VS Code's built-in tab pinning keeps them open but doesn't help you navigate. Th
 - Pin to Pin Panel → prompts for alias → optionally assign to a group
 - Unpin from Pin Panel (shown instead when the file is already pinned)
 
+**Explorer:**
+
+![Pin from Explorer](media/pin-from-explorer.png) ![Unpin from Explorer](media/unpin-from-explorer.png)
+
+**Tab bar:**
+
+![Pin from tab](media/pin-from-tabheader.png) ![Unpin from tab](media/unpin-from-tabheader.png)
+
 ---
 
 ## Usage
@@ -53,13 +68,27 @@ Right-click any file in the **Explorer sidebar** or **tab bar** → **Pin to Pin
 
 Or open a file and click the **pin** button in the Pin Panel header.
 
+You'll be prompted to enter a custom alias:
+
+![Custom alias input](media/input-custom-alias.png)
+
 ### Create a group
 Click **New Group** in the panel header and give it a name (e.g. `Routes`, `Auth`, `API`).
 
 ### Jump to a pinned file
 Press **`Cmd+Shift+;`** (Mac) / **`Ctrl+Shift+;`** (Windows/Linux) and start typing the alias.
 
-> **Keybinding conflict?** Open Keyboard Shortcuts (`Cmd+K, Cmd+S` / `Ctrl+K, Ctrl+S`), search for **`Pin Panel: Jump to Pinned File`**, and reassign it.
+### Open the sidebar
+Press **`Cmd+Shift+]`** (Mac) / **`Ctrl+Shift+]`** (Windows/Linux) to focus the Pin Panel in the activity bar.
+
+### Customizing keybindings
+To rebind either shortcut to something that works better for you:
+
+1. Open Keyboard Shortcuts — `Cmd+K, Cmd+S` (Mac) / `Ctrl+K, Ctrl+S` (Windows/Linux)
+2. Search for the command you want to rebind:
+   - **`Pin Panel: Quick Lookup`** — the fuzzy file jump
+   - **`Pin Panel: Show Panel`** — opens the sidebar
+3. Click the pencil icon next to it and press your preferred key combination.
 
 ### Reorder
 Drag and drop pins and groups within the panel.

@@ -168,6 +168,11 @@
         "command": "pin-panel.openQuickPick",
         "key": "ctrl+shift+;",
         "mac": "cmd+shift+;"
+      },
+      {
+        "command": "workbench.view.extension.pinPanelContainer",
+        "key": "ctrl+shift+]",
+        "mac": "cmd+shift+]"
       }
     ]
   },

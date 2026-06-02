@@ -76,24 +76,48 @@ export function registerCommands(
         return;
       }
       const groups = storage.getGroups();
+
+      interface PinQuickPickItem extends vscode.QuickPickItem { pin?: Pin; }
+
+      const items: PinQuickPickItem[] = [];
+
       const groupMap = new Map(groups.map(g => [g.id, g.name]));
+      const groupsWithPins = groups.filter(g => pins.some(p => p.groupId === g.id));
+      const ungrouped = pins.filter(p => !p.groupId);
 
-      interface PinQuickPickItem extends vscode.QuickPickItem { pin: Pin; }
+      const makeItem = (p: Pin): PinQuickPickItem => {
+        const groupName = p.groupId ? groupMap.get(p.groupId) : undefined;
+        return {
+          label: p.alias,
+          description: groupName ? `${p.relativePath}  ·  ${groupName}` : p.relativePath,
+          alwaysShow: true,
+          pin: p,
+        };
+      };
 
-      const items: PinQuickPickItem[] = pins.map(p => ({
-        label: `$(pin) ${p.alias}`,
-        description: p.relativePath,
-        detail: p.groupId ? `pin · ${groupMap.get(p.groupId) ?? p.groupId}` : 'pin',
-        alwaysShow: true,
-        pin: p,
-      }));
+      for (const group of groupsWithPins) {
+        items.push({ label: group.name, kind: vscode.QuickPickItemKind.Separator });
+        for (const p of pins.filter(pin => pin.groupId === group.id)) {
+          items.push(makeItem(p));
+        }
+      }
+
+      if (ungrouped.length > 0) {
+        if (groupsWithPins.length > 0) {
+          items.push({ label: 'Pinned', kind: vscode.QuickPickItemKind.Separator });
+        }
+        for (const p of ungrouped) {
+          items.push(makeItem(p));
+        }
+      }
 
       const picked = await vscode.window.showQuickPick<PinQuickPickItem>(items, {
         placeHolder: 'Jump to pinned file…',
         matchOnDescription: true,
+        matchOnDetail: true,
       });
 
-      if (picked) {
+      if (picked?.pin) {
         vscode.commands.executeCommand('pin-panel.openPin', picked.pin);
       }
     }),
