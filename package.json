@@ -14,6 +14,7 @@
     "url": "https://github.com/zerodawnstudios/pin-panel.git"
   },
   "categories": ["Other"],
+  "keywords": ["pin", "bookmark", "files", "alias", "navigation", "sidebar", "quick open", "productivity","panel","pin view","pin panel"],
   "main": "./out/extension",
   "contributes": {
     "viewsContainers": {
@@ -59,7 +60,7 @@
       },
       {
         "command": "pin-panel.openQuickPick",
-        "title": "Jump to Pinned File",
+        "title": "Quick Lookup",
         "category": "Pin Panel"
       },
       {

@@ -86,7 +86,7 @@ To rebind either shortcut to something that works better for you:
 
 1. Open Keyboard Shortcuts — `Cmd+K, Cmd+S` (Mac) / `Ctrl+K, Ctrl+S` (Windows/Linux)
 2. Search for the command you want to rebind:
-   - **`Pin Panel: Quick Lookup`** — the fuzzy file jump
+   - **`Pin Panel: Jump to Pinned File`** — the fuzzy file jump
    - **`Pin Panel: Show Panel`** — opens the sidebar
 3. Click the pencil icon next to it and press your preferred key combination.
 
